@@ -77,6 +77,7 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
         activity.post(new Runnable() {
             public void run() {
                 titleView.setText(displayable.getTitle());
+                activity.supportInvalidateOptionsMenu();
             }
         });
     }
@@ -227,6 +228,7 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
                     editView.setSelection(old.getSelectionEnd());
                 }
                 activity.setContentView(view);
+                activity.supportInvalidateOptionsMenu();
                 view.requestLayout();
                 view.requestFocus();
             }
@@ -361,6 +363,7 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
                 addToRow(row, createButton(row.getContext(), c));
             }
         }
+        invalidate();
     }
 
     private LinearLayout createRow(TableLayout table) {

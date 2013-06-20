@@ -124,6 +124,11 @@ public class VirtualCanvas extends Canvas implements CommandListener{
                 setCancel(list.touchRightCommand());
                 setCommandListener(instance);
             }
+        } else {
+            if (Config.getInstance().phoneManufacturer == Config.MICROEMU) {
+                // magic to invalidate menu
+                setCommandListener(null);
+            }
         }
     }
     

@@ -402,7 +402,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
 
     private boolean ignoreKey(int keyCode) {
         switch (keyCode) {
-//        case KeyEvent.KEYCODE_MENU:
+            case KeyEvent.KEYCODE_MENU:
             case KeyEvent.KEYCODE_VOLUME_DOWN:
             case KeyEvent.KEYCODE_VOLUME_UP:
             case KeyEvent.KEYCODE_HEADSETHOOK:
@@ -488,17 +488,31 @@ public class BombusModActivity extends MicroEmulatorActivity {
         }
 
         menu.clear();
-        boolean result = false;
-        List<AndroidCommandUI> commands = ui.getCommandsUI();
-        for (int i = 0; i < commands.size(); i++) {
-            result = true;
-            AndroidCommandUI cmd = commands.get(i);
-            if (cmd.getCommand().getCommandType() == Command.SCREEN) {
-                SubMenu item = menu.addSubMenu(Menu.NONE, i + Menu.FIRST, Menu.NONE, cmd.getCommand().getLabel());
-                item.setIcon(cmd.getDrawable());
+        boolean result = false;        
+        if (ui instanceof AndroidCanvasUI) {
+            VirtualList currentList = VirtualCanvas.getInstance().getList();
+            if (currentList instanceof DefForm) {
+                for (int i = 0; i < ((DefForm) currentList).menuCommands.size(); i++) {
+                    result = true;
+                    MenuCommand cmd = (MenuCommand) ((DefForm) currentList).menuCommands.get(i);
+                    MenuItem item = menu.add(Menu.NONE, i + Menu.FIRST, Menu.NONE, cmd.name);
+                    item.setShowAsAction(i == 0 ? MenuItem.SHOW_AS_ACTION_IF_ROOM : MenuItem.SHOW_AS_ACTION_NEVER);
+                    //item.setIcon(cmd.getDrawable());                
+                }
+            }
+        } else {
+            List<AndroidCommandUI> commands = ui.getCommandsUI();
+            for (int i = 0; i < commands.size(); i++) {
+                result = true;
+                AndroidCommandUI cmd = commands.get(i);
+                if (cmd.getCommand().getCommandType() == Command.SCREEN) {
+                    MenuItem item = menu.add(Menu.NONE, i + Menu.FIRST, Menu.NONE, cmd.getCommand().getLabel());
+                    item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                    item.setIcon(cmd.getDrawable());
+                }
             }
         }
-
+        
         return result;
     }
 
@@ -517,16 +531,22 @@ public class BombusModActivity extends MicroEmulatorActivity {
             return false;
         }
 
-        int commandIndex = item.getItemId() - Menu.FIRST;
-        List<AndroidCommandUI> commands = ui.getCommandsUI();
-        CommandUI c = commands.get(commandIndex);
-
-        if (c != null) {
-            MIDletBridge.getMIDletAccess().getDisplayAccess().commandAction(c.getCommand(), da.getCurrent());
+        int commandIndex = item.getItemId() - Menu.FIRST;        
+        if (ui instanceof AndroidCanvasUI) {
+            VirtualList currentList = VirtualCanvas.getInstance().getList();
+            ((MenuListener)currentList).menuAction(
+                    (MenuCommand) ((DefForm) currentList).menuCommands.get(commandIndex), 
+                    currentList);
             return true;
+        } else {
+            List<AndroidCommandUI> commands = ui.getCommandsUI();
+            CommandUI c = commands.get(commandIndex);
+            if (c != null) {
+                MIDletBridge.getMIDletAccess().getDisplayAccess().commandAction(c.getCommand(), da.getCurrent());
+                return true;
+            }
+            return false;
         }
-
-        return false;
     }
     
     public void applyBombusTheme() {

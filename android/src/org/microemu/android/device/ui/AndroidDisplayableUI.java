@@ -40,6 +40,7 @@ import org.microemu.device.ui.DisplayableUI;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.actionbarsherlock.app.SherlockActivity;
 
 public abstract class AndroidDisplayableUI implements DisplayableUI {
 	
@@ -115,22 +116,25 @@ public abstract class AndroidDisplayableUI implements DisplayableUI {
 
 	public void setCommandListener(CommandListener l) {
 		this.commandListener = l;
+                invalidate();
 	}
 
 	public void invalidate() {
 		activity.post(new Runnable() {
 			public void run() {
 				if (titleView != null) {
-					titleView.setText(displayable.getTitle());
+					titleView.setText(displayable.getTitle());                                                                                
 				}
+                                activity.supportInvalidateOptionsMenu();
 			}
 		});
 	}
 
 	public void showNotify() {
 		activity.post(new Runnable() {
-			public void run() {
+			public void run() {                                
 				activity.setContentView(view);
+                                activity.supportInvalidateOptionsMenu();
 				view.requestFocus();
 			}
 		});
