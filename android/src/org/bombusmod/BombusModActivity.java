@@ -104,7 +104,6 @@ public class BombusModActivity extends MicroEmulatorActivity {
         Logger.addAppender(new AndroidLoggerAppender());
 
         System.setOut(new PrintStream(new OutputStream() {
-
             StringBuffer line = new StringBuffer();
 
             @Override
@@ -121,7 +120,6 @@ public class BombusModActivity extends MicroEmulatorActivity {
         }));
 
         System.setErr(new PrintStream(new OutputStream() {
-
             StringBuffer line = new StringBuffer();
 
             @Override
@@ -190,7 +188,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
         if ("org.bombusmod.bm-notify.reply".equals(intent.getAction())) {
             Contact c = StaticData.getInstance().roster.getFirstContactWithNewHighlite(null);
             if (c != null) {
-                c.getMsgList().Reply();                
+                c.getMsgList().Reply();
             }
         }
     }
@@ -238,7 +236,6 @@ public class BombusModActivity extends MicroEmulatorActivity {
         super.onResume();
 
         new Thread(new Runnable() {
-
             public void run() {
                 MIDletAccess ma = MIDletBridge.getMIDletAccess(midlet);
                 if (ma != null) {
@@ -254,7 +251,6 @@ public class BombusModActivity extends MicroEmulatorActivity {
                         ((AndroidRepaintListener) contentView).onResume();
                     }
                     post(new Runnable() {
-
                         public void run() {
                             contentView.invalidate();
                         }
