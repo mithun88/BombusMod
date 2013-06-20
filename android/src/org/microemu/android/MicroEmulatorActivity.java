@@ -22,7 +22,6 @@
  */
 package org.microemu.android;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -42,9 +41,7 @@ import org.microemu.device.DeviceFactory;
 import org.microemu.device.EmulatorContext;
 import org.microemu.device.FontManager;
 import org.microemu.device.InputMethod;
-import org.microemu.log.Logger;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -57,9 +54,11 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
+import com.actionbarsherlock.app.SherlockActivity;
+import java.io.IOException;
 import org.bombusmod.R;
 
-public abstract class MicroEmulatorActivity extends Activity {
+public abstract class MicroEmulatorActivity extends SherlockActivity {
 
     public static AndroidConfig config = new AndroidConfig();
     public boolean windowFullscreen;

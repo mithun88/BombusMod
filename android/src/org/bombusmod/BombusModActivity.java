@@ -54,10 +54,7 @@ import org.microemu.log.Logger;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.SubMenu;
 import android.view.Window;
 import android.media.AudioManager;
 import android.app.NotificationManager;
@@ -70,9 +67,19 @@ import Client.Contact;
 import Client.StaticData;
 import android.graphics.PixelFormat;
 import android.widget.TextView;
-import android.widget.Toast;
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.SubMenu;
 import midlet.BombusMod;
 import ui.VirtualCanvas;
+import ui.VirtualList;
+import ui.controls.form.DefForm;
+import Menu.MenuCommand;
+import Menu.MenuListener;
+import Colors.ColorTheme;
+import android.content.res.Resources;
+import android.graphics.drawable.GradientDrawable;
 
 public class BombusModActivity extends MicroEmulatorActivity {
 
@@ -94,7 +101,10 @@ public class BombusModActivity extends MicroEmulatorActivity {
 
         instance = this;
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        ColorTheme.getInstance();
+        applyBombusTheme();
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeButtonEnabled(false);         
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
@@ -234,7 +244,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        applyBombusTheme();
         new Thread(new Runnable() {
             public void run() {
                 MIDletAccess ma = MIDletBridge.getMIDletAccess(midlet);
@@ -518,6 +528,20 @@ public class BombusModActivity extends MicroEmulatorActivity {
 
         return false;
     }
+    
+    public void applyBombusTheme() {
+        ActionBar actionBar = getSupportActionBar();
+        int gradientColors[] = {0xff000000 | ColorTheme.getColor(ColorTheme.BAR_BGND), 0xff000000 | ColorTheme.getColor(ColorTheme.BAR_BGND_BOTTOM)};
+        GradientDrawable drawable = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP, gradientColors);
+        actionBar.setBackgroundDrawable(drawable);
+        int titleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
+        if (0 == titleId) {
+            titleId = com.actionbarsherlock.R.id.abs__action_bar_title;
+        }
+        TextView barTextView = (TextView) findViewById(titleId);
+        barTextView.setTextColor(0xff000000 | ColorTheme.getColor(ColorTheme.BAR_INK));
+    }
+
 
     public void minimizeApp() {
         Intent startMain = new Intent(Intent.ACTION_MAIN);
