@@ -25,7 +25,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 package xmpp.login;
-
+//#ifdef TLS
+//# import Client.StaticData;
+//#endif
 import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.JabberStream;
@@ -100,7 +102,7 @@ public class SASLAuth implements JabberBlockListener {
             JabberDataBlock mech = data.getChildBlock("mechanisms");            
             if (mech != null) {
                 selectedMechanism = SaslFactory
-                        .getPreferredMechanism(account, SaslMechanism.parseMechanisms(mech));
+                        .getPreferredMechanism(account, stream, SaslMechanism.parseMechanisms(mech));
                 if (selectedMechanism == null) {
                     // no more method found
                     listener.loginFailed("SASL: Unknown mechanisms");
