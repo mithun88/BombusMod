@@ -27,6 +27,7 @@ before_install:
   - echo y | android update sdk --filter platform-tools,build-tools-18.1,android-16,extra-android-support,$ANDROID_TARGET --no-ui --force > /dev/null
 before_script: 
   - cd android/
-  - android update project -p . --target $ANDROID_TARGET
+  - android update lib-project -p ../support/v7/appcompat --target $ANDROID_TARGET
+  - android update project -p . --target $ANDROID_TARGET --library ../support/v7/appcompat
   - wget -O antenna-bin-1.2.1-beta.jar http://downloads.sourceforge.net/project/antenna/antenna/Antenna%201.2.1-beta/antenna-bin-1.2.1-beta.jar?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fantenna%2Ffiles%2F&ts=1382361452&use_mirror=citylan
 script: "ant release-nonb"
