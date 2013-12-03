@@ -34,6 +34,7 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -495,7 +496,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
                     result = true;
                     MenuCommand cmd = (MenuCommand) ((DefForm) currentList).menuCommands.get(i);
                     MenuItem item = menu.add(Menu.NONE, i + Menu.FIRST, Menu.NONE, cmd.name);
-                    item.setShowAsAction(i == 0 ? MenuItem.SHOW_AS_ACTION_IF_ROOM : MenuItem.SHOW_AS_ACTION_NEVER);
+                    MenuItemCompat.setShowAsAction(item, i == 0 ? MenuItem.SHOW_AS_ACTION_IF_ROOM : MenuItem.SHOW_AS_ACTION_NEVER);
                     //item.setIcon(cmd.getDrawable());                
                 }
             }
@@ -506,7 +507,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
                 AndroidCommandUI cmd = commands.get(i);
                 if (cmd.getCommand().getCommandType() == Command.SCREEN) {
                     MenuItem item = menu.add(Menu.NONE, i + Menu.FIRST, Menu.NONE, cmd.getCommand().getLabel());
-                    item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                    MenuItemCompat.setShowAsAction(item, MenuItem.SHOW_AS_ACTION_NEVER);
                     item.setIcon(cmd.getDrawable());
                 }
             }
