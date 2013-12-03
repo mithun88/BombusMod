@@ -34,6 +34,9 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
+import android.support.v7.app.ActionBar;
+import android.view.Menu;
+import android.view.MenuItem;
 import org.microemu.DisplayAccess;
 import org.microemu.MIDletAccess;
 import org.microemu.MIDletBridge;
@@ -67,10 +70,6 @@ import Client.Contact;
 import Client.StaticData;
 import android.graphics.PixelFormat;
 import android.widget.TextView;
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.SubMenu;
 import midlet.BombusMod;
 import ui.VirtualCanvas;
 import ui.VirtualList;
@@ -556,7 +555,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
         actionBar.setBackgroundDrawable(drawable);
         int titleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
         if (0 == titleId) {
-            titleId = com.actionbarsherlock.R.id.abs__action_bar_title;
+            titleId = R.id.action_bar_title;
         }
         TextView barTextView = (TextView) findViewById(titleId);
         barTextView.setTextColor(0xff000000 | ColorTheme.getColor(ColorTheme.BAR_INK));

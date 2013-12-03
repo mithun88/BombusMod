@@ -1,0 +1,3 @@
+[submodule "support"]
+	path = support
+	url = https://android.googlesource.com/platform/frameworks/support

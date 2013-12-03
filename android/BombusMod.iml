@@ -16,7 +16,8 @@
     <orderEntry type="jdk" jdkName="Android SDK" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="legacy" />
-    <orderEntry type="library" name="android-support-v4" level="project" />
+    <orderEntry type="library" name="android-support" level="project" />
+    <orderEntry type="module" module-name="appcompat" />
   </component>
 </module>
 

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BombusMod.iml" filepath="$PROJECT_DIR$/BombusMod.iml" />
+      <module fileurl="file://$PROJECT_DIR$/appcompat.iml" filepath="$PROJECT_DIR$/appcompat.iml" />
       <module fileurl="file://$PROJECT_DIR$/legacy.iml" filepath="$PROJECT_DIR$/legacy.iml" />
     </modules>
   </component>

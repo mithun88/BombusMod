@@ -28,6 +28,7 @@ import java.util.Iterator;
 
 import javax.microedition.io.ConnectionNotFoundException;
 
+import android.support.v7.app.ActionBarActivity;
 import org.microemu.DisplayAccess;
 import org.microemu.DisplayComponent;
 import org.microemu.MIDletAccess;
@@ -54,11 +55,10 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
-import com.actionbarsherlock.app.SherlockActivity;
 import java.io.IOException;
 import org.bombusmod.R;
 
-public abstract class MicroEmulatorActivity extends SherlockActivity {
+public abstract class MicroEmulatorActivity extends ActionBarActivity {
 
     public static AndroidConfig config = new AndroidConfig();
     public boolean windowFullscreen;
