@@ -29,5 +29,7 @@ before_script:
   - cd android/
   - android update lib-project -p ../support/v7/appcompat --target $ANDROID_TARGET
   - android update project -p . --target $ANDROID_TARGET --library ../support/v7/appcompat
+  - mkdir -p ../support/v7/appcompat/libs/
+  - cp libs/android-support-v4.jar ../support/v7/appcompat/libs/
   - wget -O antenna-bin-1.2.1-beta.jar http://downloads.sourceforge.net/project/antenna/antenna/Antenna%201.2.1-beta/antenna-bin-1.2.1-beta.jar?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fantenna%2Ffiles%2F&ts=1382361452&use_mirror=citylan
 script: "ant release-nonb"
