@@ -60,7 +60,7 @@ public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {
     private AndroidDisplayGraphics graphics = null;
 
     public AndroidCanvasUI(final MicroEmulatorActivity activity, Canvas canvas) {
-        super(activity, canvas, false);
+        super(activity, canvas);
 
 
         activity.post(new Runnable() {

@@ -5,6 +5,6 @@
 </style>
 <style name="Widget.MyTheme.ActionBar" parent="Widget.AppCompat.ActionBar">
     <item name="android:background">#ffad1010</item>
-    <!-- item name="background">#ffad1010</item-->
+    <!-- item name="background">#ffad1010</item -->
 </style>
 </resources>

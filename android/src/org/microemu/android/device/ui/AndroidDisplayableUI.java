@@ -58,20 +58,9 @@ public abstract class AndroidDisplayableUI implements DisplayableUI {
     private Vector<AndroidCommandUI> commands = new Vector<AndroidCommandUI>();
     private CommandListener commandListener = null;
 
-    protected AndroidDisplayableUI(MicroEmulatorActivity activity, Displayable displayable, boolean initView) {
+    protected AndroidDisplayableUI(MicroEmulatorActivity activity, Displayable displayable) {
         this.activity = activity;
         this.displayable = displayable;
-
-        if (initView) {
-            view = new LinearLayout(activity);
-            ((LinearLayout) view).setOrientation(LinearLayout.VERTICAL);
-            view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
-
-            titleView = new TextView(activity);
-            titleView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            titleView.setTextAppearance(titleView.getContext(), android.R.style.TextAppearance_DialogWindowTitle);
-            ((LinearLayout) view).addView(titleView);
-        }
     }
 
     public Vector<AndroidCommandUI> getCommandsUI() {
