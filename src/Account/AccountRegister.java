@@ -117,7 +117,7 @@ public class AccountRegister
             splash.setProgress(SR.MS_CONNECT_TO_ + raccount.JID.getServer(), 30);
             //give a chance another thread to finish ui
             Thread.sleep(500);
-            sd.theStream = raccount.openJabberStream();
+            raccount.openJabberStream();
             new Thread(sd.theStream).start();
 
             sd.theStream.listener = this;

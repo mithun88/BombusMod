@@ -104,7 +104,6 @@
 //#             outputStream.writeLong(allTraffic);
 //#             outputStream.writeLong(sessionTraffic);
 //#             outputStream.writeInt(sessions);
-//#             
 //#             NvStorage.writeFileRecord(outputStream, "stats", 0, true);
 //# 	} catch (Exception e) { }
 //#     }

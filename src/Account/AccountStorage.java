@@ -4,6 +4,7 @@
  */
 package Account;
 
+import Client.StaticData;
 import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -61,7 +62,8 @@ public class AccountStorage {
 //#else
             inputStream.readUTF();
             inputStream.readUTF();
-//#endif
+//#endif            
+            
         } catch (IOException e) { /*
              * e.printStackTrace();
              */ }

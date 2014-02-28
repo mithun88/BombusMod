@@ -65,7 +65,7 @@ public class Account {
         return (nick.length() == 0) ? JID.getNode() : nick;
     }    
 
-    public JabberStream openJabberStream() throws java.io.IOException {
+    public void openJabberStream() throws java.io.IOException {
         String proxy = null;
         String host = JID.getServer();
         int tempPort = port;
@@ -118,7 +118,7 @@ public class Account {
             url.insert(0, "socket://");
 //#endif            
 //#endif
-        return new JabberStream(JID.getServer(), url.toString(), tempPort, proxy);
+        sd.theStream.connect(JID.getServer(), url.toString(), tempPort, proxy);
     }
 
 //#if HTTPPOLL || HTTPCONNECT || HTTPBIND

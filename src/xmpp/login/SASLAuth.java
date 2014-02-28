@@ -37,6 +37,7 @@ import locale.SR;
 import util.Strconv;
 import xmpp.Account;
 import xmpp.XmppError;
+import xmpp.extensions.StreamManagement;
 import xmpp.login.sasl.SaslFactory;
 import xmpp.login.sasl.SaslMechanism;
 
@@ -98,7 +99,10 @@ public class SASLAuth implements JabberBlockListener {
 //#                     return JabberBlockListener.BLOCK_PROCESSED;
 //#                 }
 //#             }
-//#endif            
+//#endif        
+            JabberDataBlock sm = data.findNamespace("sm", StreamManagement.NS_SM);
+            stream.setManagementSupported(sm != null);
+            
             JabberDataBlock mech = data.getChildBlock("mechanisms");            
             if (mech != null) {
                 selectedMechanism = SaslFactory
@@ -132,16 +136,29 @@ public class SASLAuth implements JabberBlockListener {
                     listener.loginFailed("SASL: Unknown mechanisms");
                     return JabberBlockListener.NO_MORE_BLOCKS;
                 }
-            } // second stream - step 1. binding resource
-            else if (data.getChildBlock("bind") != null) {
-                JabberDataBlock bindIq = new Iq(null, Iq.TYPE_SET, "bind");
-                JabberDataBlock bind = bindIq.addChildNs("bind", "urn:ietf:params:xml:ns:xmpp-bind");
-                bind.addChild("resource", account.JID.resource);
-                stream.send(bindIq);
+            } // second stream - step 1. binding resource or resume reliable session
+            else {
+                if (stream.isManagementSupported()) {
+                    if (stream.getReliableSessionId() != null) {
+                        JabberDataBlock resume = new JabberDataBlock("resume");
+                        resume.setNameSpace(StreamManagement.NS_SM);
+                        resume.setAttribute("previd", stream.getReliableSessionId());
+                        resume.setAttribute("h", String.valueOf(stream.getStanzasRecv()));
+                        stream.send(resume);
+                        listener.loginMessage(SR.MS_SESSION_RESUMING, 90);
+                        return JabberBlockListener.BLOCK_PROCESSED;
+                    }
+                }
+                if (data.getChildBlock("bind") != null) {
+                    JabberDataBlock bindIq = new Iq(null, Iq.TYPE_SET, "bind");
+                    JabberDataBlock bind = bindIq.addChildNs("bind", "urn:ietf:params:xml:ns:xmpp-bind");
+                    bind.addChild("resource", account.JID.resource);
+                    stream.send(bindIq);
 
-                listener.loginMessage(SR.MS_RESOURCE_BINDING, 44);
+                    listener.loginMessage(SR.MS_RESOURCE_BINDING, 44);
 
-                return JabberBlockListener.BLOCK_PROCESSED;
+                    return JabberBlockListener.BLOCK_PROCESSED;
+                }
             }
 
 //#ifdef NON_SASL_AUTH
@@ -188,7 +205,7 @@ public class SASLAuth implements JabberBlockListener {
 //#endif                
 //#if ZLIB
 //#         else if (data.getTagName().equals("compressed")) {
-//#             stream.setZlibCompression();
+//#             stream.setStreamCompression();
 //#             try {
 //#                 stream.initiateStream();
 //#             } catch (IOException ex) {

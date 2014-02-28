@@ -42,7 +42,7 @@ public final class StaticData {
     private static StaticData sd;
     
     public Roster roster;
-    public JabberStream theStream;
+    public final JabberStream theStream;
    
     public ClipBoardIO clipboard;
     
@@ -71,6 +71,7 @@ public final class StaticData {
     /** Creates a new instance of StaticData */
     private StaticData() {
         clipboard = ClipBoardIO.getInstance();
+        theStream = new JabberStream();
     }
     
     public static StaticData getInstance() {

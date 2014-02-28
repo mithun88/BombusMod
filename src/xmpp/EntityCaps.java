@@ -23,6 +23,7 @@ import com.ssttr.crypto.MessageDigest;
 import java.util.Vector;
 import util.Strconv;
 import util.StringUtils;
+import xmpp.extensions.StreamManagement;
 
 /**
  *
@@ -199,6 +200,7 @@ public class EntityCaps implements JabberBlockListener {
         if (cf.eventDelivery) {
             features.addElement(Message.NS_RECEIPTS); //xep-0184
         }
+        features.addElement(StreamManagement.NS_SM);
         features.addElement("urn:xmpp:time");
         //features MUST be sorted
         features = StringUtils.sortVectorOfString(features);

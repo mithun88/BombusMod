@@ -108,8 +108,11 @@ import xmpp.extensions.IqVCard;
 //#endif
 import xmpp.JabberDispatcher;
 import xmpp.JidUtils;
+import xmpp.MessageDispatcher;
 import xmpp.PresenceDispatcher;
 import xmpp.RosterDispatcher;
+import xmpp.extensions.StreamManagement;
+import xmpp.login.SASLAuth;
 
 //#if android
 //# import org.bombusmod.BombusModActivity;
@@ -268,13 +271,15 @@ public class Roster
             setProgress(25);
             resetRoster();
         } else {
-            makeRosterOffline();
+            if (!sd.theStream.isResumptionAllowed()) {
+                makeRosterOffline();
+            }
         }
         try {
             Account a = sd.account;
             setProgress(SR.MS_CONNECT_TO_ + a.JID.getServer(), 30);
 
-            sd.theStream = a.openJabberStream();
+            a.openJabberStream();
             new Thread(sd.theStream).start();
             setProgress(SR.MS_OPENING_STREAM, 40);
             sd.theStream.listener = new JabberDispatcher();
@@ -1271,8 +1276,10 @@ public class Roster
     }
 
     public void loginSuccess() {
+        sd.theStream.cancelBlockListenerByClass(SASLAuth.class);
         sd.theStream.addBlockListener(new PresenceDispatcher());
         sd.theStream.addBlockListener(new RosterDispatcher());
+        sd.theStream.addBlockListener(new MessageDispatcher());
         sd.theStream.addBlockListener(new EntityCaps());
         sd.theStream.addBlockListener(new IqVCard());
 
@@ -1352,6 +1359,10 @@ public class Roster
         //query bookmarks
         sd.theStream.addBlockListener(new BookmarkQuery(BookmarkQuery.LOAD));
 //#endif
+        if (sd.theStream.isManagementSupported()) {
+            sd.theStream.addBlockListener(new StreamManagement());
+            sd.theStream.send(StreamManagement.enable());
+        }
     }
     
     public void loadAccount(boolean launch, int accountIndex) {
@@ -1682,7 +1693,6 @@ public class Roster
         } catch (Exception e1) { /*
              * e1.printStackTrace();
              */ }
-        sd.theStream = null;
         setProgress(SR.MS_FAILED, 100);
         doReconnect = false;
         myStatus = Presence.PRESENCE_OFFLINE;
@@ -1715,9 +1725,8 @@ public class Roster
 
     public void doReconnect() {
         setProgress(SR.MS_DISCONNECTED, 0);
-
         logoff(null);
-
+        
         try {
             sendPresence(lastOnlineStatus, null);
         } catch (Exception e2) {
@@ -1886,10 +1895,12 @@ public class Roster
     public void logoff(String mess) {
         if (isLoggedIn()) {
             try {
-                if (mess == null) {
-                    mess = sl.getStatus(Presence.PRESENCE_OFFLINE).getMessage();
+                if (!sd.theStream.isResumptionAllowed()) {
+                    if (mess == null) {
+                        mess = sl.getStatus(Presence.PRESENCE_OFFLINE).getMessage();
+                    }
+                    sendPresence(Presence.PRESENCE_OFFLINE, mess);
                 }
-                sendPresence(Presence.PRESENCE_OFFLINE, mess);
                 sd.theStream.loggedIn = false;
             } catch (Exception e) {
             }
