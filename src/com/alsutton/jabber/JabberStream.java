@@ -91,9 +91,9 @@ public class JabberStream implements XMLEventListener, Runnable {
 //#endif            
         } else {
 //#if HTTPCONNECT
-//#             connection = io.HttpProxyConnection.open(server, port, proxy, StaticData.getInstance().account.getProxyUser(), StaticData.getInstance().account.getProxyPass());
+//#             connection = io.HttpProxyConnection.open(host, port, proxy, StaticData.getInstance().account.getProxyUser(), StaticData.getInstance().account.getProxyPass());
 //#elif HTTPPOLL
-//#             connection = new io.HttpPollConnection(server, host);
+//#             connection = new io.HttpPollConnection(server, proxy);
 //#elif HTTPBIND
 //#             connection = new io.HttpBindConnection(server, host);
 //#else            
@@ -355,7 +355,9 @@ public class JabberStream implements XMLEventListener, Runnable {
 
             //dispatcher.broadcastTerminatedConnection( null );
         } catch (Exception e) {
-            //e.printStackTrace();
+            if (StaticData.Debug) {
+                e.printStackTrace();
+            }
             listener.connectionTerminated(e);
         }
         closeConnection();

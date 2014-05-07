@@ -171,9 +171,9 @@ public class ServiceDiscovery
         
         if (data.getTypeAttribute().equals("error")) {
             //System.out.println(data.toString());
-            discoIcon=RosterIcons.ICON_ERROR_INDEX;
+            discoIcon = RosterIcons.ICON_ERROR_INDEX;
             mainbarUpdate();
-            //redraw();
+            redraw();
             
             /*XmppError xe=XmppError.findInStanza(data);
             
@@ -183,7 +183,7 @@ public class ServiceDiscovery
                 public void destroyView() {exitDiscovery(false); super.destroyView();}
             };*/
 
-        //    return JabberBlockListener.BLOCK_PROCESSED;
+            return JabberBlockListener.BLOCK_PROCESSED;
         }
         if (!data.getTypeAttribute().equals("result")) {
             JabberDataBlock command1 = data.getChildBlock("query");
@@ -281,7 +281,7 @@ public class ServiceDiscovery
             new DiscoForm(this, null, null, data, stream, "discoResult", "query").fetchMediaElements(query.getChildBlocks());
         } else if (id.startsWith("discocmd")) {
             discoIcon=0;
-	    new DiscoForm(this, null, null, data, stream, "discocmd", "command");
+	    new DiscoForm(this, null, null, data, stream, "discocmd", "command").fetchMediaElements(query.getChildBlocks());
 
         } else if (id.startsWith("discosrch")) {
             discoIcon=0;	    
